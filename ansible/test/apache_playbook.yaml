@@ -1,0 +1,35 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: copy folder
+    tags: copy,folder
+    copy:
+      src: test/
+      dest: /root/test/
+      owner: root
+      group: root
+      mode: 0644
+ 
+  - name: intall apache2 package
+    apt:
+      name: apache2
+      state: latest
+      update_cache: yes
+
+  - name: start apache2 service
+    service:
+      name: apache2
+      state: started
+      enabled: yes
+
+  - name: copy default index file
+    tags: copy
+    copy:
+      src: index.html
+      dest: /var/www/html/index.html
+      owner: root
+      group: root
+      mode: 0644

@@ -1,0 +1,56 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+  - name: Install required system packages
+    apt:
+      pkg:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - software-properties-common
+        - python3-pip
+        - virtualenv
+        - python3-setuptools
+      state: latest
+      update_cache: true
+
+  - name: Add docker GPG key
+    tags: docker,compose
+    apt_key:
+      url: https://download.docker.com/linux/ubuntu/gpg
+      state: present
+
+  - name: Add docker repository
+    apt_repository:
+      repo: deb https://download.docker.com/linux/ubuntu focal stable
+      state: present
+
+  - name: Install Docker
+    apt:
+      name: docker-ce
+      state: latest
+      update_cache: true
+
+  - name: Install Docker compose
+    apt: 
+      name: docker-compose
+      state: latest
+      update_cache: true
+
+  - name: Install docker module for python
+    pip:
+      name: docker
+      virtualenv: ~/Desktop/App
+
+  - name: Pull default Docker image
+    community.docker.docker_image:
+      name: nginx
+      source: pull
+  
+  - name: Create container
+    community.docker.docker_container:
+      name: nginx
+      image: nginx
+      state: present

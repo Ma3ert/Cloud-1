@@ -1,2 +1,2 @@
 [containers]
-localhost ansible_ssh_port=2222 ansible_ssh_user=root ansible_ssh_pass=root
+192.168.56.101 ansible_ssh_user=fake
