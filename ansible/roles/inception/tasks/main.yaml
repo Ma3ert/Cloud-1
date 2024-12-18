@@ -1,0 +1,16 @@
+- name: copy the project folder
+  copy:
+    src: "{{src_folder_path}}"
+    dest: ~/Desktop/inception/
+    owner: root
+    group: root
+    mode: 0644
+
+# - name: Install docker module for python
+#   pip:
+#     name: docker
+#     virtualenv: ~/Desktop/inception/venv
+
+# - name: run make command
+#   make:
+#     chdir: ~/Desktop/inception/

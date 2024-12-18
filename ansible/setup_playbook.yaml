@@ -2,6 +2,10 @@
 
 - hosts: all
   become: true
+
+  vars:
+    src_folder_path: ~/Desktop/Cloud-1/ansible/inception_42
+
   tasks:
   - name: Install required system packages
     apt:
@@ -17,7 +21,6 @@
       update_cache: true
 
   - name: Add docker GPG key
-    tags: docker,compose
     apt_key:
       url: https://download.docker.com/linux/ubuntu/gpg
       state: present
@@ -38,19 +41,8 @@
       name: docker-compose
       state: latest
       update_cache: true
-
-  - name: Install docker module for python
-    pip:
-      name: docker
-      virtualenv: ~/Desktop/App
-
-  - name: Pull default Docker image
-    community.docker.docker_image:
-      name: nginx
-      source: pull
   
-  - name: Create container
-    community.docker.docker_container:
-      name: nginx
-      image: nginx
-      state: present
+- hosts: all
+  become: true
+  roles:
+    - inception
