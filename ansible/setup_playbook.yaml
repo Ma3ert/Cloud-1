@@ -41,5 +41,6 @@
   
 - hosts: all
   become: true
+  strategy: debug
   roles:
     - inception

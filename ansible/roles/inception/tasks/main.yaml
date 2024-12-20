@@ -4,10 +4,10 @@
     dest: "{{ project_dest }}"
     mode: 0755
 
-- name: Install docker module for python
-  pip:
-    name: docker
-    virtualenv: "{{ virtual_env }}"
+# - name: Install docker module for python
+#   pip:
+#     name: docker
+#     virtualenv: "{{ virtual_env }}"
 
 - name: run make command
   make:
