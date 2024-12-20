@@ -13,5 +13,5 @@ ssh-copy-id -i /path/to/pub-key <username>@<ip-address>
 (put other targets belows it)
 ```
 # 2- Adjust the host vars
-Go to ansible/host_vars and edit the name of the file to be: <ip-address>.yaml.
+Go to ansible/host_vars and edit the name of the file to be: `ip-address.yaml`.\
 you will have to create this file for every targeted machine.
