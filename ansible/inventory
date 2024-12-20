@@ -1,2 +1,2 @@
-[containers]
+[machines]
 192.168.56.101 ansible_ssh_user=fake
