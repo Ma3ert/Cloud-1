@@ -1,0 +1,26 @@
+server {
+    listen 443 default_server ssl;
+    listen [::]:443 default_server ssl;
+	ssl_protocols TLSv1.3;
+	ssl_certificate /etc/nginx/ssl/yait-iaz.crt;
+	ssl_certificate_key /etc/nginx/ssl/yait-iaz.key;
+
+    root /var/www/wordpress;
+    index index.php index.html;
+
+    server_name yait-iaz.42.fr;
+    location / {
+        try_files $uri $uri/ =404;
+    }
+	# pass PHP scripts on Nginx to FastCGI (PHP-FPM) server
+  	location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass wordpress:9000;
+        fastcgi_index index.php;
+        include fastcgi_params;
+		fastcgi_read_timeout 3000;
+		fastcgi_param PATH_INFO $fastcgi_path_info;
+		fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+}
