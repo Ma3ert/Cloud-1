@@ -1,0 +1,9 @@
+- name: copy the project folder
+  copy:
+    src: "{{ project_src }}"
+    dest: "{{ project_dest }}"
+    mode: 0755
+
+- name: run make command
+  make:
+    chdir: "{{ work_dir }}"

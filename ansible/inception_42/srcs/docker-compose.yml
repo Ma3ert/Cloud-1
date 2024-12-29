@@ -1,0 +1,139 @@
+version: '3.5'
+
+networks:
+  app-net:
+    name: app-net
+
+services:
+  nginx:
+    container_name: nginx
+    build: ./requirements/nginx
+    image: nginx
+    networks:
+      - app-net
+    depends_on:
+      - wordpress
+    volumes:
+      - wordpress:/var/www/wordpress
+    ports:
+      - "443:443"
+    expose:
+      - "9000"
+    restart: unless-stopped
+  
+  mariadb:
+    container_name: mariadb
+    build: ./requirements/mariaDB
+    image: mariadb
+    networks:
+      - app-net
+    volumes:
+      - database:/var/lib/mysql
+    expose:
+      - "3306"
+    env_file:
+      - .env
+    restart: unless-stopped
+
+  wordpress:
+    container_name: wordpress
+    build: ./requirements/wordpress
+    image: wordpress
+    networks:
+      - app-net
+    volumes:
+      - wordpress:/var/www/wordpress
+    expose:
+      - "3306"
+      - "9000"
+    depends_on:
+      - mariadb
+      - redis
+    env_file:
+      - .env
+    restart: unless-stopped
+
+  redis:
+    container_name: redis
+    build: ./requirements/bonus/redis
+    image: redis
+    networks:
+      - app-net
+    expose:
+      - "6379"
+    env_file:
+      - .env
+    restart: unless-stopped
+
+  # adminer:
+  #   container_name: adminer
+  #   build: ./requirements/bonus/adminer
+  #   image: adminer
+  #   networks:
+  #     - app-net
+  #   ports:
+  #     - 8000:8000
+  #   env_file:
+  #     - .env
+  #   restart: unless-stopped
+
+  # cadvisor:
+  #   container_name: cadvisor
+  #   build: ./requirements/bonus/cadvisor
+  #   image: cadvisor
+  #   networks:
+  #     - app-net
+  #   ports:
+  #     - 8080:8080
+  #   env_file:
+  #     - .env
+  #   volumes:
+  #       - /:/rootfs:ro
+  #       - /var/run:/var/run:rw
+  #       - /sys:/sys:ro
+  #       - /var/lib/docker/:/var/lib/docker:ro
+  #   restart: unless-stopped
+
+  # ftp-server:
+  #   container_name: ftp-server
+  #   build: ./requirements/bonus/ftp-server
+  #   image: ftp-server
+  #   networks:
+  #     - app-net
+  #   volumes:
+  #     - wordpress:/home/pop/ftp/files
+  #   ports:
+  #     - "21:21" #data
+  #     - "20:20" #active
+  #     - "40000-40005:40000-40005" #passive
+  #   env_file:
+  #     - .env
+  #   restart: unless-stopped
+  
+  # static-website:
+  #   container_name: static-website
+  #   build: ./requirements/bonus/static-website
+  #   image: static-website
+  #   networks:
+  #     - app-net
+  #   ports:
+  #     - "80:80"
+  #   env_file:
+  #     - .env
+  #   restart: unless-stopped
+
+volumes:
+  database:
+    name: database
+    driver: local
+    driver_opts:
+      type: none
+      device: ~/Desktop/data/database
+      o: bind
+  wordpress:
+    name: wordpress
+    driver: local
+    driver_opts:
+      type: none
+      device: ~/Desktop/data/wordpress
+      o: bind

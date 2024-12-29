@@ -1,0 +1,2 @@
+[machines]
+172.190.195.202 ansible_ssh_user=adminuser
