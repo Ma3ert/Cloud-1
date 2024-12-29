@@ -1,2 +1,2 @@
 [machines]
-20.84.51.163 ansible_ssh_user=azureuser
+172.190.195.202 ansible_ssh_user=adminuser
