@@ -1,0 +1,4 @@
+project_src: ~/Cloud-1/ansible/inception_42/
+project_dest: ~/inception_42/
+virtual_env: ~/inception_42/venv
+work_dir: ~/inception_42
